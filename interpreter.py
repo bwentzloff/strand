@@ -63,12 +63,56 @@ def execute_segment(segment, environment, viruses):
 
 def interpret_dna(sequence):
     """Interpret a DNA sequence and return results."""
-    # Example logic to simulate results
-    proteins = ["Protein_X", "Transport", "Synthesis"]
+    proteins = []
     environment = {"TEMP": "NEUTRAL", "ENERGY": "MEDIUM"}
-    viruses = ["Virus_Addition"]
+    viruses = []
 
-    return {"Proteins": proteins, "Environment": environment, "Viruses": viruses}
+    # Parse the DNA sequence into codons
+    codons = [sequence[i:i+3] for i in range(0, len(sequence), 3)]
+
+    # Process environment variables (first 3 codons)
+    env_codon_map = {
+        "AAA": ("TEMP", "HIGH"),
+        "TTT": ("TEMP", "LOW"),
+        "GGG": ("ENERGY", "HIGH"),
+        "CCC": ("ENERGY", "LOW"),
+    }
+    for codon in codons[:3]:
+        if codon in env_codon_map:
+            key, value = env_codon_map[codon]
+            environment[key] = value
+
+    # Process program codons (after environment setup)
+    codon_map = {
+        "ACC": "Protein_X",
+        "GAT": "Transport",
+        "CCG": "Synthesis",
+    }
+
+    # Simulate virus repository
+    virus_repository = {
+        "TGGACCTGA": {"name": "MIDI_Virus", "function": "MIDI_Stream"},
+    }
+
+    for i in range(3, len(codons)):
+        codon = codons[i]
+        # Check if the codon matches a known virus sequence
+        if i + 2 < len(codons):
+            virus_codon = "".join(codons[i:i+3])
+            if virus_codon in virus_repository:
+                virus_data = virus_repository[virus_codon]
+                viruses.append(virus_data["name"])
+                proteins.append(virus_data["function"])
+                break  # Skip processing the remaining virus codons
+        elif codon in codon_map:
+            proteins.append(codon_map[codon])
+
+    return {
+        "Proteins": proteins,
+        "Environment": environment,
+        "Viruses": viruses,
+    }
+
 
 if __name__ == "__main__":
     import sys
