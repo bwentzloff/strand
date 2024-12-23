@@ -81,5 +81,9 @@ Environment: {'TEMP': 'NEUTRAL', 'ENERGY': 'MEDIUM'}
 
 ---
 
+## Documentation
+
+Explore the full Strand documentation [here](https://<your-username>.github.io/strand/).
+
 ## License
 MIT License. See LICENSE file for details.
