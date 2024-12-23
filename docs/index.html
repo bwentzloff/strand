@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strand Interpreter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Strand Interpreter</h1>
+        <p>Turn DNA sequences into functional code</p>
+    </header>
+    <main>
+        <section>
+            <h2>About Strand</h2>
+            <p>The <strong>Strand Interpreter</strong> is an esoteric programming language designed to execute DNA sequences as code. Inspired by genetic programming, Strand can interpret DNA sequences or FASTA files, producing synthesized proteins, numerical results, and visual pathway graphs.</p>
+        </section>
+        <section>
+            <h2>Features</h2>
+            <ul>
+                <li>DNA sequence execution with start (<code>ATG</code>) and stop (<code>TAA</code>, <code>TAG</code>, <code>TGA</code>) codons.</li>
+                <li>Supports FASTA file inputs.</li>
+                <li>Textual logs summarizing synthesized proteins.</li>
+                <li>Numerical results for arithmetic pathways.</li>
+                <li>Visual graphs rendering pathway interactions (planned).</li>
+                <li>Extensible "virus library" system for custom functions.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Installation</h2>
+            <p>To install Strand, follow these steps:</p>
+            <pre>
+# Clone the repository
+git clone &lt;repository_url&gt;
+cd strand_interpreter
+
+# Compile the interpreter
+pip install pyinstaller
+pyinstaller --name strand --onefile interpreter.py
+
+# Move the executable to a directory in your PATH
+sudo mv dist/strand /usr/local/bin/
+            </pre>
+        </section>
+        <section>
+            <h2>Usage</h2>
+            <h3>Direct DNA Input</h3>
+            <p>Run a DNA sequence directly:</p>
+            <pre>
+strand ATGACCGATTAA
+            </pre>
+            <h3>FASTA File Input</h3>
+            <p>Run a DNA sequence from a FASTA file:</p>
+            <pre>
+strand -f example.fasta
+            </pre>
+        </section>
+        <section>
+            <h2>Example Programs</h2>
+            <h3>Basic Protein Synthesis</h3>
+            <pre>
+Input:
+ATG ACC GAT TAA
+
+Output:
+Results:
+Proteins: [['Protein_X', 'Transport']]
+Environment: {'TEMP': 'NEUTRAL', 'ENERGY': 'MEDIUM'}
+            </pre>
+            <h3>Using Viruses</h3>
+            <pre>
+Input:
+TAA GGA AAGGTTCCCGAT ATG ACC GAT TAA
+
+Output:
+Results:
+Proteins: [['Protein_X', 'Transport', 'Protein_Sum']]
+Environment: {'TEMP': 'NEUTRAL', 'ENERGY': 'MEDIUM'}
+            </pre>
+        </section>
+        <section>
+            <h2>Contributing</h2>
+            <p>Contributions are welcome! Submit issues or pull requests to enhance functionality or add features.</p>
+        </section>
+        <section>
+            <h2>License</h2>
+            <p>This project is licensed under the MIT License.</p>
+        </section>
+    </main>
+</body>
+</html>

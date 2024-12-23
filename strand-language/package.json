@@ -1,0 +1,46 @@
+{
+  "name": "strand-language",
+  "displayName": "Strand Language",
+  "description": "VSCode extension for the Strand esolang",
+  "version": "0.1.0",
+  "publisher": "your-name",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": ["Programming Languages"],
+  "activationEvents": ["onLanguage:strand"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+        {
+            "command": "strand.validate",
+            "title": "Strand: Validate"
+        },
+        {
+            "command": "strand.visualize",
+            "title": "Strand: Visualize"
+        }
+    ],
+    "languages": [
+      {
+        "id": "strand",
+        "aliases": ["Strand", "strand"],
+        "extensions": [".dna", ".fasta"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "strand",
+        "scopeName": "source.strand",
+        "path": "./syntaxes/strand.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "vsce package"
+  },
+  "devDependencies": {
+    "vsce": "^2.9.0"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "scopeName": "source.strand",
+  "patterns": [
+    {
+      "match": ">.*",
+      "name": "comment.header.strand"
+    },
+    {
+      "match": "\b(ATG|TAA|TAG|TGA|ACC|GAT|CCG)\b",
+      "name": "keyword.codon.strand"
+    },
+    {
+      "match": "[ACTG]+",
+      "name": "string.sequence.strand"
+    }
+  ],
+  "repository": {},
+  "uuid": "b12345-abcd-67890-efgh"
+}
