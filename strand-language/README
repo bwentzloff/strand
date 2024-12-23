@@ -1,0 +1,23 @@
+# Strand Language VSCode Extension
+
+This extension provides support for the Strand esoteric programming language in Visual Studio Code.
+
+## Features
+- Syntax highlighting
+- Code snippets
+- Visualization of tick-based pathway changes
+
+## Installation
+1. Clone the repository or download the extension.
+2. Open the folder in VSCode.
+3. Press `F5` to start debugging the extension.
+
+## Usage
+- Open a `.strand` file to activate the extension.
+- Use the `strand.visualize` command from the Command Palette to visualize JSON outputs.
+
+## Example
+```strand
+TGC TAA AAC AAG AAC AAG AAC ACA AAG AAG AAC AAA GGA
+ATG ACC GAT CCG TGG TAA
+```

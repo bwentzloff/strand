@@ -3,179 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strand Interpreter</title>
+    <title>Strand Language Documentation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
         }
         header {
-            background: #333;
-            color: #fff;
-            padding: 10px 15px;
+            background: #007acc;
+            color: white;
+            padding: 1rem;
             text-align: center;
         }
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2, h3 {
-            color: #333;
+        .container {
+            padding: 2rem;
         }
         code {
-            background: #eee;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-family: monospace;
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 5px;
         }
         pre {
-            background: #eee;
-            padding: 10px;
+            background: #f4f4f4;
+            padding: 1rem;
             border-radius: 5px;
             overflow-x: auto;
-        }
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Strand Interpreter</h1>
-        <p>Turn DNA sequences into functional code</p>
+        <h1>Strand Language Documentation</h1>
     </header>
-    <main>
-        <section>
-            <h2>About Strand</h2>
-            <p>The <strong>Strand Interpreter</strong> is an esoteric programming language designed to execute DNA sequences as code. Inspired by genetic programming, Strand can interpret DNA sequences or FASTA files, producing synthesized proteins, numerical results, and visual pathway graphs.</p>
-        </section>
-        <section>
-            <h2>Features</h2>
+    <div class="container">
+        <h2>About Strand</h2>
+        <p>Strand is an esoteric programming language inspired by biological DNA sequences. It interprets DNA-like input to produce complex, dynamically changing outputs while simulating chemical pathways and interactions.</p>
+
+        <h2>Features</h2>
+        <ul>
+            <li>DNA-inspired syntax using the ACGT alphabet</li>
+            <li>Dynamic pathways and proteins for advanced logic</li>
+            <li>Multi-environment support with threaded execution</li>
+            <li>Relevant JSON output for tick-based simulations</li>
+        </ul>
+
+        <h2>JSON Output for Relevant Ticks</h2>
+        <p>The Strand interpreter outputs JSON data that only logs ticks where meaningful changes occur, ensuring compact and relevant output for easier analysis.</p>
+
+        <h3>Example DNA Input</h3>
+        <pre>
+TGC TAA AAC AAG AAC AAG AAC ACA AAG AAG AAC AAA GGA  # FOREST: TEMP=HIGH, ENERGY=HIGH
+TGC TAA AAC AAC AAC AAC AAC ACC ACG AAT GGG          # DESERT: TEMP=MEDIUM, ENERGY=LOW
+ATG ACC GAT CCG TGG TAA                              # Shared pathway
+TGC TAA ACC GAT                                      # Remove edge ACC → GAT in FOREST
+TGC CAG GAT                                          # Duplicate GAT node in FOREST
+TGC TGC TAA ACC GAT                                  # Insert TAA between ACC → GAT in DESERT
+TGC GTT GAT CCG 3                                    # Deactivate GAT → CCG after 3 ticks in DESERT
+        </pre>
+
+        <h3>Example JSON Output</h3>
+        <pre>
+[
+    {
+        "Tick": 1,
+        "State": {
+            "FOREST": {
+                "Environment": {"TEMP": "HIGH", "ENERGY": "HIGH"},
+                "Pathway": {
+                    "Nodes": ["ACC", "GAT", "CCG", "TGG"],
+                    "Edges": [["ACC", "GAT"], ["GAT", "CCG"], ["CCG", "TGG"]]
+                },
+                "Output": {"Production": 4}
+            },
+            "DESERT": {
+                "Environment": {"TEMP": "MEDIUM", "ENERGY": "LOW"},
+                "Pathway": {
+                    "Nodes": ["ACC", "GAT", "CCG", "TGG"],
+                    "Edges": [["ACC", "GAT"], ["GAT", "CCG"], ["CCG", "TGG"]]
+                },
+                "Output": {"Production": 4}
+            }
+        }
+    },
+    {
+        "Tick": 3,
+        "State": {
+            "DESERT": {
+                "Environment": {"TEMP": "MEDIUM", "ENERGY": "LOW"},
+                "Pathway": {
+                    "Nodes": ["ACC", "GAT"],
+                    "Edges": [["ACC", "GAT"]]
+                },
+                "Output": {"Production": 2}
+            }
+        }
+    }
+]
+        </pre>
+
+        <h2>How It Works</h2>
+        <ol>
+            <li>Define environments using DNA-like syntax.</li>
+            <li>Create pathways and apply modifications using Strand's codons.</li>
+            <li>Run the interpreter to generate relevant JSON output.</li>
+            <li>Visualize and analyze tick-based changes.</li>
+        </ol>
+
+        <h2>Base-6 Encoding for Strings</h2>
+        <p>In Strand, strings such as environment names must be encoded using the ACGT alphabet. The encoding is done using base-6, where:</p>
+        <ul>
+            <li>Each character in the string is converted to its ASCII value.</li>
+            <li>The ASCII value is then represented in base-6 (digits: 0, 1, 2, 3, 4, 5).</li>
+            <li>Each base-6 digit is mapped to a codon:</li>
             <ul>
-                <li>DNA sequence execution with start (<code>ATG</code>) and stop (<code>TAA</code>, <code>TAG</code>, <code>TGA</code>) codons.</li>
-                <li>Supports FASTA file inputs.</li>
-                <li>Textual logs summarizing synthesized proteins.</li>
-                <li>Numerical results for arithmetic pathways.</li>
-                <li>Visual graphs rendering pathway interactions (planned).</li>
-                <li>Extensible "virus library" system for custom functions.</li>
+                <li>0 → AAA</li>
+                <li>1 → AAC</li>
+                <li>2 → AAG</li>
+                <li>3 → ACA</li>
+                <li>4 → ACC</li>
+                <li>5 → ACG</li>
             </ul>
-        </section>
-        <section>
-            <h2>Installation</h2>
-            <p>To install Strand, follow these steps:</p>
-            <pre>
-# Clone the repository
-git clone &lt;repository_url&gt;
-cd strand_interpreter
+        </ul>
 
-# Compile the interpreter
-pip install pyinstaller
-pyinstaller --name strand --onefile interpreter.py
+        <h3>Encoding Example</h3>
+        <p>For the string `FOREST`:</p>
+        <pre>
+AAC AAG AAC AAG AAC ACA AAG AAG AAC AAC AAC AAC AAG AAG ACA AAG ACA AAA
+        </pre>
 
-# Move the executable to a directory in your PATH
-sudo mv dist/strand /usr/local/bin/
-            </pre>
-        </section>
-        <section>
-            <h2>Usage</h2>
-            <h3>Direct DNA Input</h3>
-            <p>Run a DNA sequence directly:</p>
-            <pre>
-strand ATGACCGATTAA
-            </pre>
-            <h3>FASTA File Input</h3>
-            <p>Run a DNA sequence from a FASTA file:</p>
-            <pre>
-strand -f example.fasta
-            </pre>
-        </section>
-        <section>
-            <h2>Example Programs</h2>
-            <h3>Basic Protein Synthesis</h3>
-            <pre>
-Input:
-ATG ACC GAT TAA
+        <h3>Decoding Example</h3>
+        <p>The DNA `AAC AAG AAC AAG AAC ACA` decodes to `FOREST`.</p>
 
-Output:
-Results:
-Proteins: [['Protein_X', 'Transport']]
-Environment: {'TEMP': 'NEUTRAL', 'ENERGY': 'MEDIUM'}
-            </pre>
-            <h3>Using Viruses</h3>
-            <pre>
-Input:
-TAA GGA AAGGTTCCCGAT ATG ACC GAT TAA
-
-Output:
-Results:
-Proteins: [['Protein_X', 'Transport', 'Protein_Sum']]
-Environment: {'TEMP': 'NEUTRAL', 'ENERGY': 'MEDIUM'}
-            </pre>
-        </section>
-        <section>
-            <h2>Example Use Cases</h2>
-            <pre>
-    # Example Use Cases
-    
-    1. Basic Protein Synthesis
-    DNA Sequence:
-    ATG ACC GAT TAA
-    
-    Output:
-    Proteins: ["Protein_X", "Transport"]
-    Environment: {"TEMP": "NEUTRAL", "ENERGY": "MEDIUM"}
-    
-    2. Arithmetic Operations with Virus
-    DNA Sequence (with Virus Library):
-    TAA AAGGTTCCCGAT ATG ACC GAT TAA
-    
-    Output:
-    Loaded Virus: Virus_Addition
-    Proteins: ["Protein_X", "Transport", "Protein_Sum"]
-    Environment: {"TEMP": "NEUTRAL", "ENERGY": "MEDIUM"}
-            </pre>
-        </section>
-        <section>
-    <h2>Advanced Use Case: MIDI Output</h2>
-    <p>Strand can be used to generate MIDI-compatible output using specialized "virus" libraries. Here's an example:</p>
-    <h3>DNA Sequence</h3>
-    <pre>
-TAA MIDI123456 ATG ACC GAT TAA
-    </pre>
-    <h3>Expected Output</h3>
-    <pre>
-Loaded Virus: MIDI_Virus
-Results:
-Proteins: ["Protein_X", "Transport", "MIDI_Stream"]
-Environment: {"TEMP": "NEUTRAL", "ENERGY": "MEDIUM"}
-            </pre>
-            <h3>How It Works</h3>
-            <p>
-                The <code>MIDI123456</code> virus modifies the output to include a <code>MIDI_Stream</code>. 
-                This stream can be processed by external tools to generate audio. The DNA sequence, 
-                after interpretation, produces a pathway that outputs numerical data compatible with MIDI.
-            </p>
-        </section>
-        <section>
-            <h2>Contributing</h2>
-            <p>Contributions are welcome! Submit issues or pull requests to enhance functionality or add features.</p>
-        </section>
-        <section>
-            <h2>License</h2>
-            <p>This project is licensed under the MIT License.</p>
-        </section>
-    </main>
+        <h2>Explore Strand</h2>
+        <p>Download and explore the Strand language on <a href="https://github.com/your-repo/strand">GitHub</a>.</p>
+    </div>
 </body>
 </html>

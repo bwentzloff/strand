@@ -1,19 +1,20 @@
 {
   "scopeName": "source.strand",
   "patterns": [
-    {
-      "match": ">.*",
-      "name": "comment.header.strand"
-    },
-    {
-      "match": "\b(ATG|TAA|TAG|TGA|ACC|GAT|CCG)\b",
-      "name": "keyword.codon.strand"
-    },
-    {
-      "match": "[ACTG]+",
-      "name": "string.sequence.strand"
-    }
+      {
+          "name": "comment.line.strand",
+          "match": "#.*"
+      },
+      {
+          "name": "constant.language.strand",
+          "match": "\\b(A|C|T|G)+\\b"
+      },
+      {
+          "name": "keyword.control.strand",
+          "match": "\\b(TGC|TAA|AAC|AAG|ACA|ACC|ACG)\\b"
+      }
   ],
   "repository": {},
-  "uuid": "b12345-abcd-67890-efgh"
+  "fileTypes": [".strand"],
+  "uuid": "123e4567-e89b-12d3-a456-426614174000"
 }

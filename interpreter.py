@@ -1,62 +1,108 @@
 import json
 
-def parse_dna(sequence):
-    """Parse the DNA sequence into codons."""
-    if not all(base in "ACTG" for base in sequence):
-        raise ValueError("Invalid DNA sequence: Must only contain A, C, T, G.")
-    return [sequence[i:i+3] for i in range(0, len(sequence), 3)]
+def parse_environment_block(codons):
+    """Parse an environment block from the DNA."""
+    environment = {"TEMP": "LOW", "ENERGY": "LOW"}
+    env_name_codons = []
+    i = 0
 
-def initialize_environment(codons):
-    """Initialize environmental variables from the first few codons."""
-    environment = {"TEMP": "NEUTRAL", "ENERGY": "MEDIUM"}
-    env_codon_map = {
-        "AAA": ("TEMP", "HIGH"),
-        "TTT": ("TEMP", "LOW"),
-        "GGG": ("ENERGY", "HIGH"),
-        "CCC": ("ENERGY", "LOW"),
-    }
-    for codon in codons[:3]:  # First 3 codons are reserved for environment
-        if codon in env_codon_map:
-            key, value = env_codon_map[codon]
-            environment[key] = value
-    return environment
+    # Capture environment name until a recognizable TEMP codon or 'TAA'
+    while i < len(codons) and codons[i] not in ["AAA", "AAT", "AAC", "TAA"]:
+        env_name_codons.append(codons[i])
+        i += 1
 
-def extract_segments(codons):
-    """Split codons into program segments using start and stop codons."""
-    segments = []
-    current_segment = []
-    in_segment = False
-    for codon in codons:
-        if codon == "ATG":  # Start codon
-            if in_segment:
-                segments.append(current_segment)
-            current_segment = []
-            in_segment = True
-        elif codon in {"TAA", "TAG", "TGA"} and in_segment:  # Stop codon
-            current_segment.append(codon)
-            segments.append(current_segment)
-            current_segment = []
-            in_segment = False
-        elif in_segment:
-            current_segment.append(codon)
-    if in_segment:
-        segments.append(current_segment)
-    return segments
+    # Decode environment name or set a default if none exists
+    if env_name_codons:
+        environment["Name"] = decode_dna_to_string(" ".join(env_name_codons))
+    else:
+        environment["Name"] = f"Unnamed_Env_{id(environment)}"
 
-def execute_segment(segment, environment, viruses):
-    """Execute a program segment."""
-    proteins = []
-    codon_map = {
-        "ACC": "Protein_X",
-        "GAT": lambda env: "Transport" if env["ENERGY"] == "HIGH" else "Transport Blocked",
-        "CCG": "Synthesis",
-    }
-    for codon in segment:
-        if codon in codon_map:
-            action = codon_map[codon]
-            if callable(action):
-                result = action(environment)
-                proteins.append(result)
+    # Stop parsing if 'TAA' is encountered
+    if i < len(codons) and codons[i] == "TAA":
+        return environment, i + 1
+
+    # Process TEMP
+    if i < len(codons) and codons[i] in ["AAA", "AAT", "AAC"]:
+        environment["TEMP"] = {
+            "AAA": "HIGH",
+            "AAT": "MEDIUM",
+            "AAC": "LOW"
+        }[codons[i]]
+        i += 1
+
+    # Process ENERGY
+    if i < len(codons) and codons[i] in ["GGA", "GGC", "GGG"]:
+        environment["ENERGY"] = {
+            "GGA": "HIGH",
+            "GGC": "MEDIUM",
+            "GGG": "LOW"
+        }[codons[i]]
+        i += 1
+
+    return environment, i
+
+def decode_dna_to_string(dna):
+    """Decode a DNA sequence into a string using base-6 encoding."""
+    codon_to_base6 = {"AAA": 0, "AAC": 1, "AAG": 2, "ACA": 3, "ACC": 4, "ACG": 5}
+    codons = dna.split()
+    base6_digits = [codon_to_base6[codon] for codon in codons]
+    chars = []
+    ascii_value = 0
+    multiplier = 1
+    for digit in reversed(base6_digits):
+        ascii_value += digit * multiplier
+        multiplier *= 6
+        if multiplier == 216:  # Reset after every 3 digits (base-6 codons)
+            chars.append(chr(ascii_value))
+            ascii_value = 0
+            multiplier = 1
+    if ascii_value > 0:
+        chars.append(chr(ascii_value))
+    return "".join(reversed(chars))
+
+def modify_pathway(environment, pathway, tick):
+    """Modify pathways dynamically based on the environment and tick."""
+    # Placeholder for pathway modification logic
+    return pathway
+
+def interpret_dna_with_ticks(dna, max_ticks=10):
+    """Interpret DNA and output JSON for relevant ticks."""
+    codons = dna.split()
+    print("Processing DNA sequence:", dna)
+    print("Codons:", codons)
+
+    interpretation = {"Environments": {}, "Pathways": []}
+    current_index = 0
+
+    try:
+        # Parse environments
+        while current_index < len(codons):
+            if codons[current_index] == "TGC":
+                environment, next_index = parse_environment_block(codons[current_index + 1:])
+                interpretation["Environments"][environment["Name"]] = environment
+                current_index += next_index + 1
+                print("Parsed environment:", environment)
+            else:
+                break
+
+        # Parse pathways
+        while current_index < len(codons):
+            if codons[current_index] == "ATG":
+                print("Parsing pathway starting at index", current_index)
+                # Ensure there are enough codons for a pathway
+                if current_index + 3 < len(codons):
+                    interpretation["Pathways"].append({
+                        "Nodes": [codons[current_index + 1], codons[current_index + 2], codons[current_index + 3]],
+                        "Edges": [[codons[current_index + 1], codons[current_index + 2]], 
+                                  [codons[current_index + 2], codons[current_index + 3]]]
+                    })
+                    current_index += 4
+                else:
+                    print(f"Incomplete pathway definition at index {current_index}: {codons[current_index:]}")
+                    break
+            elif codons[current_index] == "TAA":  # Stop codon
+                print("Encountered stop codon 'TAA'. Ending pathway parsing.")
+                break
             else:
                 proteins.append(action)
     return proteins
@@ -117,52 +163,39 @@ def interpret_dna(sequence):
 if __name__ == "__main__":
     import sys
 
-    if len(sys.argv) < 2 or sys.argv[1] in {"--help", "-h"}:
+    # Check for command-line arguments
+    if len(sys.argv) < 2:
+        print("Usage: python interpreter.py <DNA sequence>")
+        sys.exit(1)
+
+    # Handle special flags
+    dna = sys.argv[1]
+    if dna.lower() == "--help":
         print("""
 Strand Interpreter
-===================
-Usage:
-    strand <dna_sequence>
-        - Execute a DNA sequence directly.
+Usage: python interpreter.py <DNA sequence>
 
-    strand -f <fasta_file>
-        - Execute a DNA sequence from a FASTA file.
+Options:
+  --help        Show this help message
 
-    strand -vf <virus_fasta_file> <dna_fasta_file>
-        - Execute a DNA sequence from a FASTA file with a virus library.
-
-Examples:
-    strand ATGACCGATTAA
-    strand -f examples/basic_protein_synthesis.fasta
-    strand -vf viruses/midi_virus.fasta examples/basic_protein_synthesis.fasta
-""")
+Example:
+  python interpreter.py "TGC TAA ACC GAT TAA"
+        """)
         sys.exit(0)
 
-    if sys.argv[1] == "-f" and len(sys.argv) == 3:
-        fasta_file = sys.argv[2]
-        try:
-            with open(fasta_file, "r") as f:
-                dna_sequence = parse_fasta(fasta_file)
-        except FileNotFoundError:
-            print(f"Error: File {fasta_file} not found.")
-            sys.exit(1)
-    elif sys.argv[1] == "-vf" and len(sys.argv) == 4:
-        virus_file = sys.argv[2]
-        fasta_file = sys.argv[3]
-        try:
-            virus_metadata, virus_function = import_virus_from_fasta(virus_file, virus_repository)
-            dna_sequence = parse_fasta(fasta_file)
-        except FileNotFoundError as e:
-            print(f"Error: {e}")
-            sys.exit(1)
-    else:
-        dna_sequence = sys.argv[1]
-
-    try:
-        result = interpret_dna(dna_sequence)
-        # Output JSON result
-        print(json.dumps(result))
-    except Exception as e:
-        # Output JSON-formatted error
-        print(json.dumps({"error": str(e)}))
+    # Validate DNA sequence
+    if not all(c in "ACTG " for c in dna):
+        print(f"Error: Invalid DNA sequence: Must only contain A, C, T, G.")
         sys.exit(1)
+
+    # Interpret the DNA sequence
+    try:
+        results = interpret_dna_with_ticks(dna)
+        print(json.dumps(results, indent=2))
+    except Exception as e:
+        print(f"Error interpreting DNA: {e}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

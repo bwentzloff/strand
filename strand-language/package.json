@@ -1,31 +1,21 @@
 {
-  "name": "strand-language",
-  "displayName": "Strand Language",
-  "description": "VSCode extension for the Strand esolang",
-  "version": "0.1.0",
-  "publisher": "your-name",
+  "name": "strand-vscode-extension",
+  "displayName": "Strand Language Support",
+  "description": "A VSCode extension for the Strand programming language.",
+  "version": "1.0.0",
+  "publisher": "YourName",
   "engines": {
-    "vscode": "^1.70.0"
+    "vscode": "^1.75.0"
   },
-  "categories": ["Programming Languages"],
-  "activationEvents": ["onLanguage:strand"],
-  "main": "./extension.js",
+  "categories": [
+    "Programming Languages"
+  ],
   "contributes": {
-    "commands": [
-        {
-            "command": "strand.validate",
-            "title": "Strand: Validate"
-        },
-        {
-            "command": "strand.visualize",
-            "title": "Strand: Visualize"
-        }
-    ],
     "languages": [
       {
         "id": "strand",
         "aliases": ["Strand", "strand"],
-        "extensions": [".dna", ".fasta"],
+        "extensions": [".strand"],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -33,14 +23,25 @@
       {
         "language": "strand",
         "scopeName": "source.strand",
-        "path": "./syntaxes/strand.tmLanguage.json"
+        "path": "./syntax/strand.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "strand",
+        "path": "./snippets/strand.code-snippets"
       }
     ]
   },
+  "main": "./extension.js",
   "scripts": {
-    "vscode:prepublish": "vsce package"
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./"
   },
   "devDependencies": {
-    "vsce": "^2.9.0"
+    "vscode": "^1.75.0"
+  },
+  "dependencies": {
+    "d3-graphviz": "^5.0.0"
   }
 }

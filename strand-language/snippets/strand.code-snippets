@@ -1,0 +1,17 @@
+{
+    "Basic Structure": {
+        "prefix": "strand-template",
+        "body": [
+            "TGC TAA AAC AAG AAC AAG AAC ACA AAG AAG AAC AAA GGA",
+            "ATG ACC GAT CCG TGG TAA"
+        ],
+        "description": "Basic Strand structure"
+    },
+    "Add Node": {
+        "prefix": "strand-add-node",
+        "body": [
+            "TGC TGC ${1:Node} ${2:Start} ${3:End}"
+        ],
+        "description": "Add a node to a pathway"
+    }
+}
