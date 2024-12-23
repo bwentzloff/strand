@@ -148,6 +148,27 @@ Environment: {'TEMP': 'NEUTRAL', 'ENERGY': 'MEDIUM'}
             </pre>
         </section>
         <section>
+    <h2>Advanced Use Case: MIDI Output</h2>
+    <p>Strand can be used to generate MIDI-compatible output using specialized "virus" libraries. Here's an example:</p>
+    <h3>DNA Sequence</h3>
+    <pre>
+TAA MIDI123456 ATG ACC GAT TAA
+    </pre>
+    <h3>Expected Output</h3>
+    <pre>
+Loaded Virus: MIDI_Virus
+Results:
+Proteins: ["Protein_X", "Transport", "MIDI_Stream"]
+Environment: {"TEMP": "NEUTRAL", "ENERGY": "MEDIUM"}
+            </pre>
+            <h3>How It Works</h3>
+            <p>
+                The <code>MIDI123456</code> virus modifies the output to include a <code>MIDI_Stream</code>. 
+                This stream can be processed by external tools to generate audio. The DNA sequence, 
+                after interpretation, produces a pathway that outputs numerical data compatible with MIDI.
+            </p>
+        </section>
+        <section>
             <h2>Contributing</h2>
             <p>Contributions are welcome! Submit issues or pull requests to enhance functionality or add features.</p>
         </section>
